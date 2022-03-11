@@ -36,3 +36,38 @@ code {
 {
   margin-right: 10px;
 }
+
+.ml10
+{
+  margin-left: 10px;
+}
+
+.ml190
+{
+  margin-left: 190px;
+}
+
+.yellow
+{
+  background-color: #ffff66;
+}
+
+.red
+{
+  background-color: #ff6961;
+}
+
+table,th,td{
+  border: 1px solid;
+  border-collapse: collapse;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+table
+{
+  float: left;
+  margin: 50px;
+}
