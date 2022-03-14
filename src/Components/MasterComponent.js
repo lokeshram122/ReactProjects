@@ -204,6 +204,7 @@ return (<div>
         <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>Gender</th>
                 <th>Edit</th>
                 <th>Delete</th>
         </tr>
