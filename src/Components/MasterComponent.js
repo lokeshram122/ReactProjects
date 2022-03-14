@@ -9,6 +9,7 @@ function Master(props){
 
 const [FirstName,setFirstName]  = useState("");
 const [LastName,setLastName]  = useState("");
+const [gender,setgender]  = useState("");
 const [Name,setName] = useState([]);
 const [mode,setmode] = useState("New");   
 const [editid,seteditid] = useState(0);
@@ -71,7 +72,8 @@ myHeaders.append("Content-Type", "application/json");
 
 var raw = JSON.stringify({
   "first_name": FirstName,
-  "last_name": LastName
+  "last_name": LastName,
+  "gender":gender
 });
 
 var requestOptions = {
@@ -88,7 +90,7 @@ var response = await fetch("http://localhost:4000/register", requestOptions)
   .then(result => id=result)
   .catch(error => console.log('error', error));
 
-  array.push({_id:id,first_name:FirstName,last_name:LastName})
+  array.push({_id:id,first_name:FirstName,last_name:LastName,gender:gender})
 
 
     setName(array)
@@ -128,6 +130,7 @@ let onedit=(Id)=>{
     console.log(array)
     setFirstName(array[0].first_name)
     setLastName(array[0].last_name)
+    setgender(array[0].gender)
     seteditid(array[0]._id)
     setmode("Edit")
 }
@@ -143,7 +146,8 @@ let onEditSubmit=async()=>{
     
     var raw = JSON.stringify({
       "first_name": FirstName,
-      "last_name": LastName
+      "last_name": LastName,
+      "gender":gender
     });
     
     var requestOptions = {
@@ -165,6 +169,7 @@ let onEditSubmit=async()=>{
         {
             element.first_name=FirstName
             element.last_name=LastName
+            element.gender=gender
         }
     });
     console.log(array)
@@ -186,6 +191,11 @@ return (<div>
         <div className="w100 fleft mt10 ml10">
         <span className="fleft mr10">Last Name</span><input className="fleft" type="text" name="LastName" value={LastName} onChange={(e)=>{onclickEvents(e)}}></input>
         </div>
+        <div className="w100 fleft mt10 ml10">
+        <input className="fleft mr10" type="radio" value="Male" name="gender" checked={gender=="Male"}  onChange={(e)=>setgender(e.target.value)} /> <span className="fleft mr10" >  Male</span>
+        <input className="fleft mr10" type="radio" value="Female" name="gender" checked={gender=="Female"}  onChange={(e)=>setgender(e.target.value)}/> <span className="fleft mr10" >  Female</span>
+        <input className="fleft mr10" type="radio" value="Other" name="gender" checked={gender=="Other"}  onChange={(e)=>setgender(e.target.value)}/> <span className="fleft mr10" >  Other</span>
+        </div>
         <div className="fleft w100 mt10 ml190">
         {mode=="New"?<button className="fleft" type="button" onClick={onSubmit}>Submit</button>
         :<button className="fleft" style={{marginLeft:"23px"}} type="button" id={editid} onClick={onEditSubmit}>Edit</button>}
@@ -200,7 +210,7 @@ return (<div>
         <tbody>
         {Name.map((n)=>{
             return(
-                <tr><td>{n.first_name}</td><td>{n.last_name}</td><td><button className="btn btn-default btn-sm yellow" onClick={()=>onedit(n._id)}><span class="glyphicon glyphicon-pencil"></span> Edit</button></td><td><button className="btn btn-default btn-sm red" onClick={()=>ondelete(n._id)}><span class="glyphicon glyphicon-trash"></span> Delete</button></td></tr>
+                <tr><td>{n.first_name}</td><td>{n.last_name}</td><td>{n.gender}</td><td><button className="btn btn-default btn-sm yellow" onClick={()=>onedit(n._id)}><span class="glyphicon glyphicon-pencil"></span> Edit</button></td><td><button className="btn btn-default btn-sm red" onClick={()=>ondelete(n._id)}><span class="glyphicon glyphicon-trash"></span> Delete</button></td></tr>
             )
         })}
         </tbody>    
