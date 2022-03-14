@@ -1,4 +1,8 @@
 import {React,useEffect,useState} from "react";
+const axios = require('axios')
+
+
+
 
 
 function Master(props){
@@ -8,6 +12,30 @@ const [LastName,setLastName]  = useState("");
 const [Name,setName] = useState([]);
 const [mode,setmode] = useState("New");   
 const [editid,seteditid] = useState(0);
+
+
+const getApiData = async () => {
+   
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+      
+     var users =  await fetch("http://localhost:4000/pageload", requestOptions)
+        .then(response => response.json())
+
+    console.log(users)
+    setName(users)
+
+
+
+  };
+
+  useEffect(() => {
+    getApiData();
+  }, []);
+   
+    
 
 
 let onclickEvents=(e)=>{
@@ -34,20 +62,57 @@ let guid = () => {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-let onSubmit =()=>{
+let onSubmit =async()=>{
     var array = Name;
-    array.push({ID:guid(),FirstName:FirstName,LastName:LastName})
+    
+
+    var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+var raw = JSON.stringify({
+  "first_name": FirstName,
+  "last_name": LastName
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+var id;
+
+var response = await fetch("http://localhost:4000/register", requestOptions)
+  .then(response => response.text())        
+  .then(result => id=result)
+  .catch(error => console.log('error', error));
+
+  array.push({_id:id,first_name:FirstName,last_name:LastName})
+
+
     setName(array)
     setFirstName("")
     setLastName("");
-    console.log(Name)
+    //console.log(Name)
 }
 
-let ondelete=(Id)=>{
+let ondelete=async(Id)=>{
 
     var array=Name;
+
+    var requestOptions = {
+        method: 'DELETE',
+        redirect: 'follow'
+      };
+      
+      var response = await fetch("http://localhost:4000/delete/"+Id, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
     array = array.filter(x => {
-        return x.ID != Id;
+        return x._id != Id;
       })
     console.log(array)
     setName(array)
@@ -56,27 +121,50 @@ let ondelete=(Id)=>{
 let onedit=(Id)=>{
 
     var array=Name;
+    
     array = array.filter(x => {
-        return x.ID == Id;
+        return x._id == Id;
       })
     console.log(array)
-    setFirstName(array[0].FirstName)
-    setLastName(array[0].LastName)
-    seteditid(array[0].ID)
+    setFirstName(array[0].first_name)
+    setLastName(array[0].last_name)
+    seteditid(array[0]._id)
     setmode("Edit")
 }
 
-let onEditSubmit=()=>{
+let onEditSubmit=async()=>{
     var array = Name;
     //array[editid].FirstName=FirstName
     //array[editid].LastName=LastName
     console.log(array,editid)
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    
+    var raw = JSON.stringify({
+      "first_name": FirstName,
+      "last_name": LastName
+    });
+    
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    
+    var response = await fetch("http://localhost:4000/update/"+editid, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+
+
     debugger;
     array = array.forEach(element => {
-        if(element.ID == editid)
+        if(element._id == editid)
         {
-            element.FirstName=FirstName
-            element.LastName=LastName
+            element.first_name=FirstName
+            element.last_name=LastName
         }
     });
     console.log(array)
@@ -112,7 +200,7 @@ return (<div>
         <tbody>
         {Name.map((n)=>{
             return(
-                <tr><td>{n.FirstName}</td><td>{n.LastName}</td><td><button className="btn btn-default btn-sm yellow" onClick={()=>onedit(n.ID)}><span class="glyphicon glyphicon-pencil"></span> Edit</button></td><td><button className="btn btn-default btn-sm red" onClick={()=>ondelete(n.ID)}><span class="glyphicon glyphicon-trash"></span> Delete</button></td></tr>
+                <tr><td>{n.first_name}</td><td>{n.last_name}</td><td><button className="btn btn-default btn-sm yellow" onClick={()=>onedit(n._id)}><span class="glyphicon glyphicon-pencil"></span> Edit</button></td><td><button className="btn btn-default btn-sm red" onClick={()=>ondelete(n._id)}><span class="glyphicon glyphicon-trash"></span> Delete</button></td></tr>
             )
         })}
         </tbody>    
