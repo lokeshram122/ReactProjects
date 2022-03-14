@@ -27,6 +27,11 @@ code {
   float: left;
 }
 
+.fright
+{
+  float: right;
+}
+
 .mt10
 {
   margin-top: 10px;
@@ -35,6 +40,11 @@ code {
 .mr10
 {
   margin-right: 10px;
+}
+
+.mr430
+{
+  margin-right: 430px;
 }
 
 .ml10
