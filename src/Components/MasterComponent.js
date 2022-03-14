@@ -188,7 +188,7 @@ return (<div>
         </div>
         <div className="fleft w100 mt10 ml190">
         {mode=="New"?<button className="fleft" type="button" onClick={onSubmit}>Submit</button>
-        :<button className="fleft" type="button" id={editid} onClick={onEditSubmit}>Edit</button>}
+        :<button className="fleft" style={{marginLeft:"23px"}} type="button" id={editid} onClick={onEditSubmit}>Edit</button>}
         </div>
         <table>
         <tr>
