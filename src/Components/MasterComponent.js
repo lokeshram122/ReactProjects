@@ -27,6 +27,8 @@ const getApiData = async () => {
         method: 'GET',
         redirect: 'follow'
       };
+
+      debugger;
       
      var users =  await fetch("http://localhost:4000/pageload", requestOptions)
         .then(response => response.json())
@@ -58,17 +60,12 @@ else if(e.target.name == "LastName")
   
 }
 
-let guid = () => {
-    let s4 = () => {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-}
+
 
 let onSubmit =async()=>{
+
+if(FirstName!=""&&LastName!=""&&country!=""&&region!="")
+{
     var array = Name;
     
 
@@ -108,6 +105,9 @@ var response = await fetch("http://localhost:4000/register", requestOptions)
     setName(array)
     setFirstName("")
     setLastName("");
+}
+
+
     //console.log(Name)
 }
 
@@ -134,6 +134,7 @@ let ondelete=async(Id)=>{
 
 let onedit=(Id)=>{
 
+
     var array=Name;
     
     array = array.filter(x => {
@@ -150,57 +151,63 @@ let onedit=(Id)=>{
 }
 
 let onEditSubmit=async()=>{
-    var array = Name;
-    //array[editid].FirstName=FirstName
-    //array[editid].LastName=LastName
-    console.log(array,editid)
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    if(FirstName!=""&&LastName!=""&&country!=""&&region!="")
+    {
+        var array = Name;
+        //array[editid].FirstName=FirstName
+        //array[editid].LastName=LastName
+        console.log(array,editid)
     
-    var raw = JSON.stringify({
-      "first_name": FirstName,
-      "last_name": LastName,
-      "gender":gender,
-      "address":{
-        "country":country,
-        "region":region
-    }
-    });
-    
-    var requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-    
-    var response = await fetch("http://localhost:4000/update/"+editid, requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
-
-
-    debugger;
-    array = array.forEach(element => {
-        if(element._id == editid)
-        {
-            element.first_name=FirstName
-            element.last_name=LastName
-            element.gender=gender
-            element.address.country = country
-            element.address.region = region
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        
+        var raw = JSON.stringify({
+          "first_name": FirstName,
+          "last_name": LastName,
+          "gender":gender,
+          "address":{
+            "country":country,
+            "region":region
         }
-    });
-    console.log(array)
-    //setName(array)
-    // setName(array)
+        });
+        
+        var requestOptions = {
+          method: 'PUT',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+        
+        var response = await fetch("http://localhost:4000/update/"+editid, requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
+    
+    
+        debugger;
+        array = array.forEach(element => {
+            if(element._id == editid)
+            {
+                element.first_name=FirstName
+                element.last_name=LastName
+                element.gender=gender
+                element.address.country = country
+                element.address.region = region
+            }
+        });
+        console.log(array)
+        //setName(array)
+        // setName(array)
+        
+        //console.log(Name)
+        
+    }
     setFirstName("")
     setLastName("");
     setgender("Male")
     setcountry("")
     setregion("")
-    //console.log(Name)
     setmode("New")
 }
 
