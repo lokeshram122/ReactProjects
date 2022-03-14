@@ -251,10 +251,10 @@ return (<div className="w50 fleft">
         {Name.map((n)=>{
             return(
                 <tr><td>{n.first_name}</td><td>{n.last_name}</td><td>{n.gender}</td>
-                <td data-tip={n.address.region}>{n.address.country}</td><td><button className="btn btn-default btn-sm yellow" onClick={()=>onedit(n._id)}><span class="glyphicon glyphicon-pencil"></span> Edit</button></td><td><button className="btn btn-default btn-sm red" onClick={()=>ondelete(n._id)}><span class="glyphicon glyphicon-trash"></span> Delete</button></td></tr>
+                <td data-tip={n.address.region}>{n.address.country}</td><td><button className="btn btn-default btn-sm yellow" onClick={()=>onedit(n._id)}><span class="glyphicon glyphicon-pencil"></span> Edit</button></td><td><button className="btn btn-default btn-sm red" onClick={()=>ondelete(n._id)}><span class="glyphicon glyphicon-trash"></span> Delete</button></td> <ReactTooltip /></tr>
             )
         })}
-        <ReactTooltip />
+       
         </tbody>    
         </table> 
         
