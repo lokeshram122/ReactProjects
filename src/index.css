@@ -43,6 +43,26 @@ code {
 }
 
 
+.select{
+  padding: 9px;
+    width: 51%;
+    border-color: lightgray;
+    border-radius: 5px;
+}
+
+.slerr{
+  border-color: red;
+}
+
+.Txtfld
+{
+  FONT-FAMILY: revert;
+    FONT-SIZE: larger;
+}
+
+.mt16{
+margin-top: 16px;
+}
 .mr430
 {
   margin-right: 430px;

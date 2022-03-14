@@ -1,6 +1,8 @@
 import {React,useEffect,useState} from "react";
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import ReactTooltip from 'react-tooltip';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 
 const axios = require('axios')
@@ -12,13 +14,17 @@ const axios = require('axios')
 function Master(props){
 
 const [FirstName,setFirstName]  = useState("");
+const [fnerror,setfnerror] = useState(false)
 const [LastName,setLastName]  = useState("");
+const [lnerror,setlnerror] = useState(false)
 const [gender,setgender]  = useState("Male");
 const [country,setcountry]  = useState("");
 const [region,setregion]  = useState("");
 const [Name,setName] = useState([]);
 const [mode,setmode] = useState("New");   
 const [editid,seteditid] = useState(0);
+const [drpcsscn,setdrpcsscn] = useState("fright select")
+const [drpcssrn,setdrpcssrn] = useState("fright select")
 
 
 const getApiData = async () => {
@@ -51,11 +57,13 @@ if(e.target.name=="FirstName")
 {
     setFirstName(e.target.value)
     //setName({...Name,FirstName:e.target.value})
+    setfnerror(false)
 }
 else if(e.target.name == "LastName")
 {
     setLastName(e.target.value)
     //setName({...Name,LastName:e.target.value})
+    setlnerror(false)
 }
   
 }
@@ -63,6 +71,26 @@ else if(e.target.name == "LastName")
 
 
 let onSubmit =async()=>{
+
+if(FirstName=="")
+{
+    setfnerror(true)
+}
+
+if(LastName=="")
+{
+    setlnerror(true)
+}
+
+if(country=="")
+{
+    setdrpcsscn("fright select slerr")
+}
+
+if(region=="")
+{
+    setdrpcssrn("fright select slerr")
+}
 
 if(FirstName!=""&&LastName!=""&&country!=""&&region!="")
 {
@@ -134,6 +162,10 @@ let ondelete=async(Id)=>{
 
 let onedit=(Id)=>{
 
+    setfnerror(false)
+    setlnerror(false)
+    setdrpcsscn("fright select")
+    setdrpcssrn("fright select")
 
     var array=Name;
     
@@ -217,33 +249,34 @@ let onEditSubmit=async()=>{
 return (<div className="w50 fleft">
         <div className="w100 fleft mt10">
         <span className="fleft" >First Name :</span>
-        <input className="fright"  type="text" name="FirstName" value={FirstName} onChange={(e)=>{onclickEvents(e)}}></input>
+        <TextField name="FirstName"  className="fright w50 Txtfld" label="First Name" value={FirstName} error={fnerror} onChange={(e)=>{onclickEvents(e)}}/>
         </div>
         <div className="w100 fleft mt10" >
-        <span className="fleft">Last Name :</span><input className="fright"  type="text" name="LastName" value={LastName} onChange={(e)=>{onclickEvents(e)}}></input>
+        <span className="fleft">Last Name :</span>
+        <TextField name="LastName" size="Large" className="fright w50 Txtfld" label="Last Name"  value={LastName} error={lnerror} onChange={(e)=>{onclickEvents(e)}}/>
         </div>
         <div className="w100 fleft mt10" >
         <span className="fleft" >Gender :</span>
         <input className="fright" type="radio" value="Other" name="gender" checked={gender=="Other"}  onChange={(e)=>setgender(e.target.value)}/>   <span className="fright mr10 ml10" >  Other </span>
         <input className="fright" type="radio" value="Female" name="gender" checked={gender=="Female"}  onChange={(e)=>setgender(e.target.value)}/> <span className="fright ml10 mr10" >  Female </span>
-         <input className="fright"  type="radio" value="Male" name="gender" checked={gender=="Male"}  onChange={(e)=>setgender(e.target.value)} /> <span className="fright ml10 mr10">  Male </span>
+         <input className="fright"  type="radio" value="Male" name="gender" checked={gender=="Male"}  onChange={(e)=>setgender(e.target.value)} /> <span className="fright ml10 mr10">  Male </span>        
         </div>
         <div className="w100 fleft mt10">
         <span  className="fleft">Country :</span><CountryDropdown 
-          className="fright"
+          className={drpcsscn}
           value={country}
-          onChange={(val) => setcountry(val)} />
+          onChange={(val) =>{setdrpcsscn("fright select");setcountry(val)} } />
         </div>
         <div className="w100 fleft mt10">
         <span className="fleft" >Region :</span><RegionDropdown 
-         className="fright"
+         className={drpcssrn}
           country={country}
           value={region}
-          onChange={(val) => setregion(val)} />
+          onChange={(val) => {setdrpcssrn("fright select");setregion(val)}} />
         </div>
         <div className="w100 fleft mt10">
-        {mode=="New"?<button className="fright" type="button" onClick={onSubmit}>Submit</button>
-        :<button className="fright" type="button" id={editid} onClick={onEditSubmit}>Edit</button>}
+        {mode=="New"?<Button variant="contained" className="fright" onClick={onSubmit}>Submit</Button>
+        :<Button variant="contained" id={editid} className="fright" onClick={onEditSubmit}>Edit</Button>}
         </div>
         <table>
         <tr>
