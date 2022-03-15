@@ -99,6 +99,7 @@ if(region=="")
 
 if(FirstName!=""&&LastName!=""&&country!=""&&region!="")
 {
+  
     var array = Name;
     
 
@@ -138,6 +139,8 @@ var response = await fetch("http://localhost:4000/register", requestOptions)
     setName(array)
     setFirstName("")
     setLastName("");
+    setcountry("")
+    setregion("")
 }
 
 
