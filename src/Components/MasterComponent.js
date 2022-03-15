@@ -46,6 +46,7 @@ const getApiData = async () => {
   catch(error)
   {
     console.log(error)
+    alert(error.message + " please check if the node app is running")
     setName([])
   }
 };
