@@ -28,23 +28,27 @@ const [drpcssrn,setdrpcssrn] = useState("fright select")
 
 
 const getApiData = async () => {
-   
+
+  try
+  {
     var requestOptions = {
-        method: 'GET',
-        redirect: 'follow'
-      };
+      method: 'GET',
+      redirect: 'follow'
+    };
 
-      debugger;
-      
-     var users =  await fetch("http://localhost:4000/pageload", requestOptions)
-        .then(response => response.json())
+    debugger;
+    
+   var users =  await fetch("http://localhost:4000/pageload", requestOptions)
+      .then(response => response.json())
 
-    console.log(users)
-    setName(users)
-
-
-
-  };
+   setName(users)
+  }
+  catch(error)
+  {
+    console.log(error)
+    setName([])
+  }
+};
 
   useEffect(() => {
     getApiData();
@@ -98,24 +102,24 @@ if(FirstName!=""&&LastName!=""&&country!=""&&region!="")
     
 
     var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Content-Type", "application/json");
 
-var raw = JSON.stringify({
-  "first_name": FirstName,
-  "last_name": LastName,
-  "gender":gender,
-  "address":{
-      "country":country,
-      "region":region
-  }
-});
+    var raw = JSON.stringify({
+      "first_name": FirstName,
+      "last_name": LastName,
+      "gender":gender,
+      "address":{
+          "country":country,
+          "region":region
+      }
+    });
 
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow'
-};
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
 
 var id;
 
@@ -246,7 +250,8 @@ let onEditSubmit=async()=>{
 
 
 
-return (<div className="w50 fleft">
+return (<div className="w50 fleft ml10">
+  <div className="formbox">
         <div className="w100 fleft mt10">
         <span className="fleft" >First Name :</span>
         <TextField name="FirstName"  className="fright w50 Txtfld" label="First Name" value={FirstName} error={fnerror} onChange={(e)=>{onclickEvents(e)}}/>
@@ -278,6 +283,7 @@ return (<div className="w50 fleft">
         {mode=="New"?<Button variant="contained" className="fright" onClick={onSubmit}>Submit</Button>
         :<Button variant="contained" id={editid} className="fright" onClick={onEditSubmit}>Edit</Button>}
         </div>
+  </div>
         <table>
         <tr>
                 <th>First Name</th>
